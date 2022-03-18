@@ -43,6 +43,8 @@ func calculate_move_velocity(
 	# if the user is jumping, adjust the y output
 	if direction.y == -1.0:
 		out.y = speed.y * direction.y
+		# play the sound effect
+		$JumpSound.play()
 	# allow for an interruption so that the player can release the jump button to have a shorter jump
 	if is_jump_interrupted:
 		out.y = 0.0
@@ -55,6 +57,7 @@ func calculate_stomp_velocity(linear_velocity: Vector2, impulse: float)-> Vector
 	return out
 
 func die() -> void:
+	# TODO: play death sound
 	PlayerData.deaths += 1
 	queue_free()
 
