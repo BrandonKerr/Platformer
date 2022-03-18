@@ -9,3 +9,4 @@ onready var anim_player: AnimationPlayer = get_node("AnimationPlayer")
 func _on_body_entered(body: PhysicsBody2D) -> void:
 	PlayerData.score += score
 	anim_player.play("fade_out")
+	$CoinSound.play()
