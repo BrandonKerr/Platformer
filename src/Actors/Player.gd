@@ -1,5 +1,7 @@
 extends Actor
 
+onready var anim_player: AnimationPlayer = $AnimationPlayer
+
 # pixels/second impulse to apply when stomping an enemy
 export var stomp_impulse: = 1000.0
 
@@ -14,12 +16,13 @@ func _on_EnemyDetector_body_entered(body: PhysicsBody2D) -> void:
 	
 
 func _physics_process(delta: float) -> void:
-	var is_jump_interrupted: = Input.is_action_just_released("jump") and _velocity.y < 0.0
-	var direction: = get_direction()
-	_velocity = calculate_move_velocity(_velocity, direction, speed, is_jump_interrupted)
-	
-	# update the _velocity using the result of move_and_slide so that it handles collisions, etc
-	_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
+	if (!PlayerData.is_input_disabled):
+		var is_jump_interrupted: = Input.is_action_just_released("jump") and _velocity.y < 0.0
+		var direction: = get_direction()
+		_velocity = calculate_move_velocity(_velocity, direction, speed, is_jump_interrupted)
+		
+		# update the _velocity using the result of move_and_slide so that it handles collisions, etc
+		_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
 	
 
 func get_direction() -> Vector2:
@@ -57,7 +60,15 @@ func calculate_stomp_velocity(linear_velocity: Vector2, impulse: float)-> Vector
 	return out
 
 func die() -> void:
-	# TODO: play death sound
+	# stop the player from moving anymore
+	PlayerData.is_input_disabled = true
+	$DeathExplosion.emitting = true
+	anim_player.play("death")
+	$DeathSound.play()
+	# wait until the player ends before continuing
+	yield(anim_player, "animation_finished")
+	# don't forget: updating the deaths in PlayerData will emit that the player died and will show the menu, etc
 	PlayerData.deaths += 1
+	PlayerData.is_input_disabled = false
 	queue_free()
 
