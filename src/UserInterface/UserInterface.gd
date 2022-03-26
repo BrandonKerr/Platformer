@@ -8,8 +8,6 @@ onready var score_label: Label = $ScoreLabel
 var paused: = false setget set_paused
 
 func _ready() -> void:
-	#TODO this doesn't seem to work. maybe because of pause??
-	
 	# connect the score_updated signal from PlayerData to our update_interface function (same sort of thing that would be done in the node menu
 	PlayerData.connect("score_updated", self, "update_interface")
 	PlayerData.connect("player_died", self, "_on_PlayerData_player_died")
@@ -34,7 +32,7 @@ func set_paused(value: bool) -> void:
 		$PauseOverlay/Menu/ResumeButton.grab_focus()
 
 func update_interface() -> void:
-	score_label.text = "Score: %s" % PlayerData.score
+	score_label.text = "Score: %s" % (PlayerData.score + PlayerData.total_score)
 
 
 func _on_ResumeButton_button_up() -> void:
