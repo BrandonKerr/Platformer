@@ -1,5 +1,7 @@
 extends "res://src/Actors/Actor.gd"
 
+onready var anim_player: AnimationPlayer = $AnimationPlayer
+
 export var score:= 100
 
 func _ready() -> void:
@@ -24,6 +26,16 @@ func _physics_process(delta: float) -> void:
 	_velocity.y = move_and_slide(_velocity, FLOOR_NORMAL).y
 
 func die() -> void:
-	get_node("CollisionShape2D").disabled = true
+	# stop movement
+	set_physics_process(false)
+	# disable the collision
+	$CollisionShape2D.set_deferred('disabled', true)
+	# run the animation and play the sound effect
+	anim_player.play("death")
+	$DeathSound.play()
+	# wait until the animation player ends before continuing
+	yield(anim_player, "animation_finished")
+	# clear the enemy from the game
 	queue_free()
+	# and update the player's score
 	PlayerData.score += score
