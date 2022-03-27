@@ -4,3 +4,6 @@ coin - https://freesound.org/people/ProjectsU012/sounds/341695/
 death - https://freesound.org/people/jeremysykes/sounds/341681/
 enemy squish - https://freesound.org/people/ProjectsU012/sounds/360870/
 level complete - https://freesound.org/people/LittleRobotSoundFactory/sounds/270528
+
+end - https://freesound.org/people/luckylittleraven/sounds/203122/
+main - https://freesound.org/people/josefpres/sounds/615342/
